@@ -53,7 +53,7 @@ class Login extends Component {
                 value={this.state.password}
               />
             </FormGroup>
-            <Button>Sign In</Button>
+            <Button color="primary">Sign In</Button>
           </Form>
           <div className="w-100 mt-2">
             <p>

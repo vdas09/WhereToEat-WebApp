@@ -70,7 +70,7 @@ class Register extends Component {
                 value={this.state.password}
               />
             </FormGroup>
-            <Button>Sign Up</Button>
+            <Button color="primary">Sign Up</Button>
           </Form>
           <div className="w-100 mt-2">
             <p>
