@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
-import { Link } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
+import firebase from "../config/Fire";
 
 class Register extends Component {
   state = {
@@ -12,15 +13,19 @@ class Register extends Component {
     this.setState({ [e.target.id]: e.target.value });
   };
 
-  handleSignIn = e => {
+  handleRegister = e => {
     e.preventDefault();
-    alert(
-      this.state.restaurauntName +
-        " " +
-        this.state.email +
-        " " +
-        this.state.password
-    );
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(this.state.email, this.state.password)
+      .then(() => {
+        firebase
+          .auth()
+          .signOut()
+          .then(() => this.props.history.push("/"))
+          .catch(err => console.log(err));
+      })
+      .catch(err => console.log(err));
   };
 
   render() {
@@ -28,7 +33,7 @@ class Register extends Component {
       <div className="d-flex flex-column vh-100 justify-content-center align-items-center">
         <div className="border w-100 p-5">
           <h1 className="w-100">Register your Restauraunt</h1>
-          <Form className="w-100" onSubmit={this.handleSignIn}>
+          <Form className="w-100" onSubmit={this.handleRegister}>
             <FormGroup>
               <Label for="restaurauntName">Restauraunt Name</Label>
               <Input
@@ -78,4 +83,4 @@ class Register extends Component {
   }
 }
 
-export default Register;
+export default withRouter(Register);

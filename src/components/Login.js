@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 import { Link } from "react-router-dom";
 
+import firebase from "../config/Fire";
+
 class Login extends Component {
   state = {
     email: "",
@@ -14,7 +16,11 @@ class Login extends Component {
 
   handleSignIn = e => {
     e.preventDefault();
-    alert(this.state.email + " " + this.state.password);
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(this.state.email, this.state.password)
+      .then(user => console.log(user))
+      .catch(err => console.log(err));
   };
 
   render() {
