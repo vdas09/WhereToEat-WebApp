@@ -32,18 +32,18 @@ class Register extends Component {
     return (
       <div className="d-flex flex-column vh-100 justify-content-center align-items-center">
         <div className="border w-100 p-5">
-          <h1 className="w-100">Register your Restauraunt</h1>
+          <h1 className="w-100">Register your Restaurant</h1>
           <Form className="w-100" onSubmit={this.handleRegister}>
             <FormGroup>
-              <Label for="restaurauntName">Restauraunt Name</Label>
+              <Label for="restaurantName">Restaurant Name</Label>
               <Input
                 type="text"
-                name="restaurauntName"
-                id="restaurauntName"
+                name="restaurantName"
+                id="restaurantName"
                 required
-                placeholder="Enter Resturaunt Name"
+                placeholder="Enter Restaurant Name"
                 onChange={this.handleChange}
-                value={this.state.restaurauntName}
+                value={this.state.restaurantName}
               />
             </FormGroup>
             <FormGroup>
