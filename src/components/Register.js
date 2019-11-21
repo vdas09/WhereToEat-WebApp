@@ -20,9 +20,19 @@ class Register extends Component {
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
       .then(() => {
         firebase
-          .auth()
-          .signOut()
-          .then(() => this.props.history.push("/"))
+          .firestore()
+          .collection("restauraunt-owners")
+          .doc(this.state.email)
+          .set({
+            value: this.state.email
+          })
+          .then(() => {
+            firebase
+              .auth()
+              .signOut()
+              .then(() => this.props.history.push("/"))
+              .catch(err => console.log(err));
+          })
           .catch(err => console.log(err));
       })
       .catch(err => console.log(err));
