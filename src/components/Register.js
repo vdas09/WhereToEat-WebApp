@@ -16,7 +16,7 @@ class Register extends Component {
   };
 
   handleRegister = e => {
-    this.setState({ errMsg: null });
+    this.setState({ errorMsg: null });
     const { email, restaurantName } = this.state;
     e.preventDefault();
     firebase
@@ -28,16 +28,21 @@ class Register extends Component {
           .collection("restauraunt-owners")
           .add({
             restaurantName: restaurantName,
-            restaurantEmail: email,
+            restaurantEmail: email
           })
-          .then(function(docRef) {
+          .then(
+            function(docRef) {
               console.log("Document written with ID: ", docRef.id);
               this.props.history.push("/");
-          }.bind(this)).catch(function(error) {
-              console.error("Error adding document: ", error);
+            }.bind(this)
+          )
+          .catch(function(error) {
+            this.setState({ errorMsg: "Registration failed." });
           });
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        this.setState({ errorMsg: "Registration failed." });
+      });
   };
 
   render() {
@@ -88,7 +93,7 @@ class Register extends Component {
             <p>
               Already have an account? <Link to="/">Sign In</Link>
             </p>
-            <p className="text-danger">{this.state.errMsg}</p>
+            <p className="text-danger">{this.state.errorMsg}</p>
           </div>
         </div>
       </div>
