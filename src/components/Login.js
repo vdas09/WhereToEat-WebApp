@@ -7,7 +7,8 @@ import firebase from "../config/Fire";
 class Login extends Component {
   state = {
     email: "",
-    password: ""
+    password: "",
+    errorMsg: null
   };
 
   handleChange = e => {
@@ -15,12 +16,15 @@ class Login extends Component {
   };
 
   handleSignIn = e => {
+    this.setState({ errMsg: null });
     e.preventDefault();
     firebase
       .auth()
       .signInWithEmailAndPassword(this.state.email, this.state.password)
       .then(user => console.log(user))
-      .catch(err => console.log(err));
+      .catch(err => {
+        this.setState({ errMsg: "Invalid credentials" });
+      });
   };
 
   render() {
@@ -59,6 +63,7 @@ class Login extends Component {
             <p>
               Don't have an account? <Link to="/register">Sign Up</Link>
             </p>
+            <p className="text-danger">{this.state.errMsg}</p>
           </div>
         </div>
       </div>
