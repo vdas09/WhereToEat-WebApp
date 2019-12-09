@@ -26,22 +26,18 @@ class Register extends Component {
         firebase
           .firestore()
           .collection("restauraunt-owners")
-          .doc(this.state.email)
-          .set({
-            value: this.state.email
+          .add({
+            restaurantName: restaurantName,
+            restaurantEmail: email,
           })
-          .then(() => {
-            firebase
-              .auth()
-              .signOut()
-              .then(() => this.props.history.push("/"))
-              .catch(err => console.log(err));
-          })
-          .catch(err => console.log(err));
+          .then(function(docRef) {
+              console.log("Document written with ID: ", docRef.id);
+              this.props.history.push("/");
+          }.bind(this)).catch(function(error) {
+              console.error("Error adding document: ", error);
+          });
       })
-      .catch(err => {
-        this.setState({ errMsg: "Registration failed" });
-      });
+      .catch(err => console.log(err));
   };
 
   render() {
