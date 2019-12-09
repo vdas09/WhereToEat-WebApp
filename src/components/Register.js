@@ -7,7 +7,8 @@ class Register extends Component {
   state = {
     email: "",
     password: "",
-    restaurantName: ""
+    restaurantName: "",
+    errorMsg: null
   };
 
   handleChange = e => {
@@ -15,6 +16,7 @@ class Register extends Component {
   };
 
   handleRegister = e => {
+    this.setState({ errMsg: null });
     const { email, restaurantName } = this.state;
     e.preventDefault();
     firebase
@@ -37,7 +39,9 @@ class Register extends Component {
           })
           .catch(err => console.log(err));
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        this.setState({ errMsg: "Registration failed" });
+      });
   };
 
   render() {
@@ -88,6 +92,7 @@ class Register extends Component {
             <p>
               Already have an account? <Link to="/">Sign In</Link>
             </p>
+            <p className="text-danger">{this.state.errMsg}</p>
           </div>
         </div>
       </div>
