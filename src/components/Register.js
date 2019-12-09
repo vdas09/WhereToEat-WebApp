@@ -48,7 +48,8 @@ class Register extends Component {
   render() {
     return (
       <div className="d-flex flex-column vh-100 justify-content-center align-items-center">
-        <div className="border w-100 p-5">
+        <h1>WhereToEat Restaurant Owner Dashboard</h1>
+        <div className="border w-100 p-5 mt-4">
           <h1 className="w-100">Register your Restaurant</h1>
           <Form className="w-100" onSubmit={this.handleRegister}>
             <FormGroup>
