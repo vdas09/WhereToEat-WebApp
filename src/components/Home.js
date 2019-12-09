@@ -84,6 +84,24 @@ class Home extends Component {
     });
   }
 
+  renderLoadedContent() {
+  	const { queries } = this.state;
+  	if (queries.length) {
+  		return (<Table>
+            <thead>
+              <tr>
+                <th>Cuisine Type</th>
+                <th>Max Price</th>
+                <th>User Email</th>
+                <th>Timestamp</th>
+              </tr>
+            </thead>
+            <tbody>{this.renderQueryData()}</tbody>
+          </Table>);
+  	}
+  	return (<div>No searches yet. Check back soon!</div>);
+  }
+
   componentDidMount() {
     this.getUserRestaurant();
   }
@@ -104,19 +122,7 @@ class Home extends Component {
         <br />
         <h3 className="mt-4">Here's how you were found</h3>
         <br />
-        {loaded ? (
-          <Table>
-            <thead>
-              <tr>
-                <th>Cuisine Type</th>
-                <th>Max Price</th>
-                <th>User Email</th>
-                <th>Timestamp</th>
-              </tr>
-            </thead>
-            <tbody>{this.renderQueryData()}</tbody>
-          </Table>
-        ) : (
+        {loaded ? this.renderLoadedContent() : (
           <div>Loading...</div>
         )}
       </div>
