@@ -6,7 +6,8 @@ import firebase from "../config/Fire";
 class Register extends Component {
   state = {
     email: "",
-    password: ""
+    password: "",
+    restaurantName: "",
   };
 
   handleChange = e => {
@@ -14,16 +15,25 @@ class Register extends Component {
   };
 
   handleRegister = e => {
+    const { email, restaurantName } = this.state;
     e.preventDefault();
     firebase
       .auth()
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
       .then(() => {
         firebase
-          .auth()
-          .signOut()
-          .then(() => this.props.history.push("/"))
-          .catch(err => console.log(err));
+          .firestore()
+          .collection("restauraunt-owners")
+          .add({
+            restaurantName: restaurantName,
+            restaurantEmail: email,
+          })
+          .then(function(docRef) {
+              console.log("Document written with ID: ", docRef.id);
+              this.props.history.push("/");
+          }.bind(this)).catch(function(error) {
+              console.error("Error adding document: ", error);
+          });
       })
       .catch(err => console.log(err));
   };
