@@ -7,7 +7,8 @@ class Home extends Component {
     email: "",
     restaurantName: "",
     queries: [],
-    loaded: false
+    loaded: false,
+    error: false
   };
 
   getUserRestaurant() {
@@ -15,56 +16,64 @@ class Home extends Component {
     let userRestaurant = "";
     let restaurantQueries = [];
 
-    firebase
-      .firestore()
-      .collection("restauraunt-owners")
-      .where("restaurantEmail", "==", userEmail)
-      .limit(1)
-      .get()
-      .then(
-        function(querySnapshot) {
-          querySnapshot.forEach(function(doc) {
-            userRestaurant = doc.data().restaurantName;
-          });
-          this.setState(
-            {
-              email: userEmail,
-              restaurantName: userRestaurant
-            },
-            this.getRestaurantQueries
-          );
-        }.bind(this)
-      )
-      .catch(function(error) {
-        console.log("Error getting documents: ", error);
-      });
+    try {
+      firebase
+        .firestore()
+        .collection("restauraunt-owners")
+        .where("restaurantEmail", "==", userEmail)
+        .limit(1)
+        .get()
+        .then(
+          function(querySnapshot) {
+            querySnapshot.forEach(function(doc) {
+              userRestaurant = doc.data().restaurantName;
+            });
+            this.setState(
+              {
+                email: userEmail,
+                restaurantName: userRestaurant
+              },
+              this.getRestaurantQueries
+            );
+          }.bind(this)
+        )
+        .catch(function(error) {
+          console.log("Error getting documents: ", error);
+        });
+    } catch (e) {
+      this.setState({ error: true });
+    }
   }
 
   getRestaurantQueries() {
     const { restaurantName } = this.state;
     let restaurantQueries = [];
 
-    firebase
-      .firestore()
-      .collection("queries-2")
-      .doc(restaurantName)
-      .collection("entries")
-      .orderBy("qTimeStamp", "desc")
-      .get()
-      .then(
-        function(querySnapshot) {
-          querySnapshot.forEach(function(doc) {
-            restaurantQueries.push(doc.data());
-          });
-          this.setState({
-            queries: restaurantQueries,
-            loaded: true
-          });
-        }.bind(this)
-      )
-      .catch(function(error) {
-        console.log("Error getting documents: ", error);
-      });
+    try {
+      firebase
+        .firestore()
+        .collection("queries-2")
+        .doc(restaurantName)
+        .collection("entries")
+        .orderBy("qTimeStamp", "desc")
+        .get()
+        .then(
+          function(querySnapshot) {
+            querySnapshot.forEach(function(doc) {
+              restaurantQueries.push(doc.data());
+            });
+            this.setState({
+              queries: restaurantQueries,
+              loaded: true
+            });
+          }.bind(this)
+        )
+        .catch(function(error) {
+          console.log("Error getting documents: ", error);
+        });
+    } catch (e) {
+      this.setState({ loaded: true, error: true });
+    }
   }
 
   renderQueryData() {
@@ -85,21 +94,29 @@ class Home extends Component {
   }
 
   renderLoadedContent() {
-  	const { queries } = this.state;
-  	if (queries.length) {
-  		return (<Table>
-            <thead>
-              <tr>
-                <th>Cuisine Type</th>
-                <th>Max Price</th>
-                <th>User Email</th>
-                <th>Timestamp</th>
-              </tr>
-            </thead>
-            <tbody>{this.renderQueryData()}</tbody>
-          </Table>);
-  	}
-  	return (<div>No searches yet. Check back soon!</div>);
+    const { queries } = this.state;
+    if (queries.length) {
+      return (
+        <Table>
+          <thead>
+            <tr>
+              <th>Cuisine Type</th>
+              <th>Max Price</th>
+              <th>User Email</th>
+              <th>Timestamp</th>
+            </tr>
+          </thead>
+          <tbody>{this.renderQueryData()}</tbody>
+        </Table>
+      );
+    } else if (this.state.error) {
+      return (
+        <div>
+          You have logged in with a consumer account, not a restaurant account.
+        </div>
+      );
+    }
+    return <div>No searches yet. Check back soon!</div>;
   }
 
   componentDidMount() {
@@ -122,9 +139,7 @@ class Home extends Component {
         <br />
         <h3 className="mt-4">Here's how you were found</h3>
         <br />
-        {loaded ? this.renderLoadedContent() : (
-          <div>Loading...</div>
-        )}
+        {loaded ? this.renderLoadedContent() : <div>Loading...</div>}
       </div>
     );
   }
