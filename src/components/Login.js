@@ -30,9 +30,14 @@ class Login extends Component {
   render() {
     return (
       <div className="d-flex flex-column vh-100 justify-content-center align-items-center">
-        <h1>WhereToEat Restaurant Owner Dashboard</h1>
-        <div className="border w-100 p-5 mt-4">
-          <h1 className="w-100">Sign In</h1>
+        <h4 class="text-center">WhereToEat Restaurant Owner Dashboard</h4>
+        <p className="text-muted text-center">
+          For demo purposes, feel free to login as{" "}
+          <code>&lt;testingmadras@gmail.com&gt;</code> with password of{" "}
+          <code>&lt;password&gt;</code>.
+        </p>
+        <div className="border w-100 p-5 mt-2">
+          <h4 className="w-100">Sign In</h4>
           <Form className="w-100" onSubmit={this.handleSignIn}>
             <FormGroup>
               <Label for="email">Email</Label>

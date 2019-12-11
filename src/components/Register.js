@@ -48,9 +48,13 @@ class Register extends Component {
   render() {
     return (
       <div className="d-flex flex-column vh-100 justify-content-center align-items-center">
-        <h1>WhereToEat Restaurant Owner Dashboard</h1>
-        <div className="border w-100 p-5 mt-4">
-          <h1 className="w-100">Register your Restaurant</h1>
+        <h4 className="text-center">WhereToEat Restaurant Owner Dashboard</h4>
+        <p className="text-muted text-center">
+          Please note that the restaurant name must exactly match what the
+          restaurant is listed as in Google Maps search results.
+        </p>
+        <div className="border w-100 p-5 mt-2">
+          <h4 className="w-100">Register your Restaurant</h4>
           <Form className="w-100" onSubmit={this.handleRegister}>
             <FormGroup>
               <Label for="restaurantName">Restaurant Name</Label>
